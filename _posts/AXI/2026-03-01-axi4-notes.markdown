@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "AXI4 Notes"
+date:   2026-03-01 12:00:00 +0900
+categories: AXI4 AMBA
+# 이 요약 포스트만 홈 리스트에 노출되도록 두고,
+# 개별 상세 글들은 show_on_home: false 로 숨긴 상태입니다.
+---
+
+AXI4 is a high‑performance AMBA on‑chip interconnect protocol that separates address/control and data transfers, supports multiple outstanding transactions, and is widely used for high‑bandwidth, low‑latency communication between masters and shared memories in modern SoCs.  
+The detailed explanation is split into the articles below, so please refer to each note for a deeper dive into the spec and architecture.
+
+- [AMBA AXI4 Spec Overview]({% post_url AXI/2026-03-04-amba-axi4-spec-overview %})
+- [AXI4 Architecture]({% post_url AXI/2026-03-04-axi4-architecture %})
+- [AXI4 Channel Signaling Requirements]({% post_url AXI/2026-03-04-axi4-channel-signaling-requirements %})
+- [AXI4 SIGNAL – AVALID, AREADY & Handshake]({% post_url AXI/2026-03-04-axi4-signal-avalid-aready-handshake %})
+- [AXI4 SIGNAL – BURST, LEN & SIZE]({% post_url AXI/2026-03-04-axi4-signal-burst-len-size %})
+- [AXI4 SIGNAL – CACHE]({% post_url AXI/2026-03-04-axi4-signal-cache %})
+- [AXI4 SIGNAL – PROT]({% post_url AXI/2026-03-04-axi4-signal-prot %})
+- [AXI4 SIGNAL – Global Signals]({% post_url AXI/2026-03-04-axi4-signal-global-signals %})
+
+
+<!--
+For a full list and future AXI4 articles, you can also visit the dedicated collection page: [AXI4 Notes]({{ "/axi/" | relative_url }}).
+-->

@@ -40,6 +40,10 @@ plainwhite:
     #gitlab: jekyll
     #email: jekyll
 
+  # navigation:
+  #   - title: AXI4 Notes
+  #     url: "/axi"
+
     # Mastodon instances
     # mastodon:
     # - username: jekyll

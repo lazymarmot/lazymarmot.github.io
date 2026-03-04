@@ -187,6 +187,33 @@ main {
   padding-bottom: 1rem;
 }
 
+.home-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #444;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  font-size: 22px;
+  z-index: 999;
+  opacity: 0.8;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
+}
+
+.home-fab:hover {
+  background-color: $linkColor;
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+
 .post-categories {
   list-style-type: none;
   margin: 0;
