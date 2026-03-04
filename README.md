@@ -1,222 +1,121 @@
-# plainwhite
+# Lazymarmot's Blog
 
-Simplistic jekyll portfolio-style theme for writers.
+This repository contains the source code for **https://lazymarmot.github.io**.  
+It is a Jekyll site based on the `plainwhite` theme, customized for:
 
-**Demo**: [samarsault.com](https://samarsault.com)
+- Personal study notes (primarily about **AMBA AXI4**)
+- A simple **portfolio** section for selected projects
 
-![plainwhite theme preview](/screenshot.png)
+---
 
-## Installation on Github Pages
+## Structure
 
-Add this line to your site's `_config.yml`:
+- `_config.yml`  
+  Global site configuration (title, author, navigation, theme options).
 
-```yaml
-remote_theme: samarsault/plainwhite-jekyll
+- `_layouts/`  
+  - `default.html` – Base layout (profile sidebar, global styles, home button).  
+  - `home.html` – Blog index that lists study posts.  
+  - `portfolio.html` – Custom layout that lists posts categorized as `portfolio`.  
+  - `post.html`, `page.html` – Individual post/page templates.
+
+- `_posts/AXI/`  
+  AMBA AXI4 related notes:
+  - `2026-03-01-axi4-notes.markdown` – **AXI4 Notes** index (links to all AXI articles).
+  - `2026-03-04-...` – Detailed posts (Architecture, Channel signaling, SIGNAL*, Cache, Glossary, Memory Type, etc.).
+
+- `_posts/Portfolio/`  
+  Portfolio entries (each post with `categories: portfolio`).
+
+- `study.md`  
+  Entry point for study notes. Uses `layout: home` and lists normal blog posts.
+
+- `portfolio.md`  
+  Entry point for portfolio. Uses `layout: portfolio` and lists posts tagged with `portfolio`.
+
+- `assets/posts_image/AXI/`  
+  Images used in AXI posts, organized by topic (e.g. `AXI Architecture`, `Channel Signaling Requirements`, `SIGNAL *`, `AXI Glossary`, etc.).
+
+---
+
+## Running locally
+
+```bash
+bundle install
+bundle exec jekyll serve
 ```
 
-## Installation
+Then open:
 
-Add this line to your Jekyll site's `Gemfile`:
+- `http://localhost:4000/` → automatically redirects to `/study/`
+- `http://localhost:4000/study/` → study posts
+- `http://localhost:4000/portfolio/` → portfolio posts
 
-```ruby
-gem "plainwhite"
+---
+
+## Writing a new study post
+
+1. 새 글 파일을 `_posts/` (또는 `_posts/AXI/` 같은 서브 디렉토리) 아래에 만든다.
+
+   ```markdown
+   _posts/2026-03-10-my-new-note.markdown
+   ```
+
+2. 다음과 같은 front matter 를 사용한다.
+
+   ```markdown
+   ---
+   layout: post
+   title:  "My New Note"
+   date:   2026-03-10 12:00:00 +0900
+   categories: AXI4 AMBA   # 원하는 태그들
+   show_on_home: true      # 홈(/study)에 숨기고 싶으면 false 로 설정
+   ---
+   ```
+
+3. 아래에 내용을 마크다운으로 작성한다.
+
+이렇게 하면, `show_on_home` 이 `false` 가 아닌 한 `/study/` 의 포스트 리스트에 나타난다.
+
+---
+
+## Adding a new portfolio item
+
+1. `_posts/Portfolio/` 아래에 새 포스트를 만든다.
+
+   ```markdown
+   _posts/Portfolio/2026-03-10-my-project.markdown
+   ```
+
+2. 다음 front matter 를 사용한다.
+
+   ```markdown
+   ---
+   layout: post
+   title: "My Project"
+   date: 2026-03-10 12:00:00 +0900
+   categories: portfolio something-else
+   show_on_home: false
+   ---
+   ```
+
+3. 프로젝트 설명, 사용 기술, 스크린샷 링크 등을 본문에 작성한다.
+
+`categories` 에 `portfolio` 가 포함된 포스트는 자동으로 `/portfolio/` 페이지의 리스트에 나타난다.
+
+---
+
+## Deployment
+
+이 사이트는 **GitHub Pages** 로 빌드/호스팅된다.
+
+- `main` 브랜치가 소스 브랜치이다.
+- `main` 에 push 할 때마다 GitHub 가 Jekyll 을 실행하고 결과를 `https://lazymarmot.github.io` 에 배포한다.
+
+별도의 CI/CD 설정 없이, 수정 후 다음 명령으로 배포할 수 있다.
+
+```bash
+git add .
+git commit -m "Update blog content"
+git push origin main
 ```
-
-And add this line to your Jekyll site's `_config.yml`:
-
-```yaml
-theme: plainwhite
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install plainwhite
-
-## Usage
-
-The "plainwhite" key in \_config.yml is used to customize the theme data.
-
-```yaml
-plainwhite:
-  name: Adam Denisov
-  tagline: Developer. Designer
-  date_format: "%b %-d, %Y"
-
-  social_links:
-    twitter: samarsault
-    github: samarsault
-    linkedIn: in/samarsault # format: locale/username
-```
-
-**Updating Placeholder Image**
-
-The placeholder portfolio image can be replaced by the desired image by placing it as `assets/portfolio.png` in your jekyll website, or by changing the following line in `_config.yaml`
-
-```yaml
-plainwhite:
-  portfolio_image:  "assets/portfolio.png" # the path from the base directory of the site to the image to display (no / at the start)
-```
-
-To use a different image for dark mode, e.g. with different colors that work better in dark mode, add a `portfolio_image_dark` entry in addition to the `portfolio_image`.
-
-```yaml
-plainwhite:
-  portfolio_image:      "assets/portfolio.png"
-  portfolio_image_dark: "assets/portfolio_dark.png"
-```
-
-**Comments (Disqus)**
-
-Comments on posts can be enabled by specifying your disqus_shortname under plainwhite in `_config.yml`. For example,
-
-```yaml
-plainwhite:
-  disqus_shortname: games
-```
-
-**Google Analytics**
-
-It can be enabled by specifying your analytics id under plainwhite in `_config.yml`
-
-```yaml
-plainwhite:
-  analytics_id: "< YOUR ID >"
-```
-
-**Sitemap**
-
-It can be toggled by the following line to under plainwhite in `_config.yml`
-
-```yaml
-plainwhite:
-  sitemap: true
-```
-
-**Excerpts**
-
-Excerpts can be enabled by adding the following line to your `_config.yml`
-
-```yaml
-show_excerpts: true
-```
-
-**Layouts**
-
-- Home
-- Page
-- Post
-
-**Navigation**
-
-Navigation can be enabled by adding the following line to your `_config.yml`
-
-```yaml
-plainwhite:
-  navigation:
-    - title: My Work
-      url: "/my-work"
-    - title: Resume
-      url: "/resume"
-```
-
-**Mobile**
-
-By default, Plainwhite places the sidebar (logo, name, tagline etc.) above the content on mobile (narrow screens).
-To condense it (moving some things to the bottom of the page and making the rest smaller) so it takes up less space, add the following to your `_config.yml`:
-
-```yaml
-plainwhite:
-  condensed_mobile:
-    - home
-    - post
-    - page
-```
-
-This chooses which layouts (types of page) should be condensed on mobile screens. E.g. if you want everything but the landing page to be condensed, remove `home` from the list. This option does not affect rendering on wider screens.
-
-**Dark mode**
-
-Dark mode can be enabled by setting the `dark_mode` flag in your `_config.yml`
-
-The website will check the OS preferred color scheme and set the theme accordingly, the preference will then be saved in a cookie
-
-```yaml
-plainwhite:
-  dark_mode: true
-```
-
-![plainwhite dark theme previe](/dark.png)
-
-**Multiline tagline**
-
-Tagline can be multiline in this way
-
-```yaml
-plainwhite:
-  tagline: |
-  First Line. 
-
-  Second Line. 
-
-  Third Line.
-```
-
-**Search-bar**
-
-Search-bar can be enabled by adding the following line to `config.yml`
-
-```yaml
-plainwhite:
-  search: true
-```
-
-Search is powered by [Simple-Jekyll-Search](https://github.com/christian-fei/Simple-Jekyll-Search) Jekyll plugin. A `search.json` containing post meta and contents will be generated in site root folder. Plugin JavaScript will then match for posts based on user input. More info and `search.json` customization documentation can be found in plugin repository.
-
-**Base URL**
-
-You can specify a custom base URL (eg. example.com/blog/) by adding the following line to `_config.yaml`. Note that there is no trailing slash on the URL.
-
-```yaml
-baseurl: "/blog"
-```
-
-**Language**
-
-You can set the `lang` attribute of the `<html>` tag on your pages by changing the following line in `_config.yml`:
-
-```yaml
-plainwhite:
-  html_lang: "en"
-```
-
-[See here for a full list of available language codes](https://www.w3schools.com/tags/ref_country_codes.asp)
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/samarsault/plainwhite-jekyll. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
-## Development
-
-To set up your environment to develop this theme, run `bundle install`.
-
-Your theme is setup just like a normal Jekyll site! To test your theme, run `bundle exec jekyll serve` and open your browser at `http://localhost:4000`. This starts a Jekyll server using your theme. Add pages, documents, data, etc. like normal to test your theme's contents. As you make modifications to your theme and to your content, your site will regenerate and you should see the changes in the browser after a refresh, just like normal.
-
-When your theme is released, only the files in `_layouts`, `_includes`, `_sass` and `assets` tracked with Git will be bundled.
-To add a custom directory to your theme-gem, please edit the regexp in `plainwhite.gemspec` accordingly.
-
-## Donation
-If this project help you reduce time to develop, you can give me a cup of coffee :) 
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/thelehhman)
-
-## License
-
-The theme is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## More themes
-
-- [Texture](https://github.com/samarsault/texture)
