@@ -39,11 +39,11 @@ plainwhite:
     #telegram: jekyll
     #gitlab: jekyll
     #email: jekyll
-
-  # navigation:
-  #   - title: AXI4 Notes
-  #     url: "/axi"
-
+  navigation:
+    - title: Study Notes
+      url: "/study"
+    - title: Portfolio
+      url: "/portfolio"
     # Mastodon instances
     # mastodon:
     # - username: jekyll

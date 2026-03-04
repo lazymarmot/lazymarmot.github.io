@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "AXI4 – Glossary"
+date:   2026-03-04 12:00:00 +0900
+categories: AXI4 AMBA
+show_on_home: false
+---
+
 # 용어 설명
 
 ### **Prefetch**
@@ -606,4 +614,4 @@ len=4
 
 👉 write 4개 → write 1개
 
-![image.png](%EC%9A%A9%EC%96%B4%20%EC%84%A4%EB%AA%85/image.png)
+![image.png](/assets/posts_image/AXI/AXI%20Glossary/image.png)

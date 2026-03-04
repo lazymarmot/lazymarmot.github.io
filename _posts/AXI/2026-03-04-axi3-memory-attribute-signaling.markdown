@@ -1,8 +1,16 @@
+---
+layout: post
+title:  "AXI3 Memory Attribute Signaling"
+date:   2026-03-04 12:00:00 +0900
+categories: AXI4 AMBA
+show_on_home: false
+---
+
 # AXI3 memory attribute signaling
 
-![image.png](AXI3%20memory%20attribute%20signaling/image.png)
+![image.png](/assets/posts_image/AXI/AXI3%20memory%20attribute%20signaling/image.png)
 
-![image.png](AXI3%20memory%20attribute%20signaling/image%201.png)
+![image.png](/assets/posts_image/AXI/AXI3%20memory%20attribute%20signaling/image%201.png)
 
 ### **AxCACHE 비트 설명**
 

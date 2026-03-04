@@ -1,0 +1,43 @@
+---
+layout: default
+---
+
+{%- if page.title -%}
+  <h1 class="page-heading">{{ page.title }}</h1>
+{%- endif -%}
+
+{%- assign portfolio_posts = site.posts | where_exp: "p", "p.categories contains 'portfolio'" -%}
+
+{%- if portfolio_posts.size > 0 -%}
+  <ul class="posts">
+    {%- for post in portfolio_posts -%}
+      <li>
+        {%- assign date_format = site.plainwhite.date_format | default: "%b %-d, %Y" -%}
+        <a class="post-link" href="{{ post.url | relative_url }}">
+          <h2 class="post-title">{{ post.title | escape }}</h2>
+        </a>
+        <div class="post-meta">
+          <div class="post-date">
+            <i class="icon-calendar"></i>
+            {{ post.date | date: date_format }}
+          </div>
+          {%- if post.categories.size > 0-%}
+          <ul class="post-categories">
+            {%- for tag in post.categories -%}
+            <li>{{ tag }}</li>
+            {%- endfor -%}
+          </ul>
+          {%- endif -%}
+        </div>
+        <div class="post">
+          {%- if site.show_excerpts -%}
+            {{ post.excerpt }}
+          {%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- else -%}
+  <p>No portfolio posts yet.</p>
+{%- endif -%}
+
