@@ -3,7 +3,7 @@ layout: post
 title: "함수는 어떻게 사용할까?"
 date: 2026-03-05 12:30:00 +0900
 categories: Code Optimization
-show_on_home: true
+show_on_home: false
 ---
 
 # 함수는 어떻게 사용할까?

@@ -5,8 +5,7 @@ date:   2026-03-05 11:00:00 +0900
 categories: Code Optimization
 ---
 
-C 코드 개발 시 다양한 최적화에 대한 내용을 정리
-내용이 
+C 코드 개발 시 다양한 최적화에 대한 내용을 정리합니다. 아래에서 C 코드의 메모리 사용, 포인터, 동적 할당, 구조체/포인터 활용 등 상세 내용을 다룹니다. 
 
 - [코드 최적화]({% post_url Code_Optimization/2026-03-05-1-code-optimization %})
 - [C의 메모리 사용]({% post_url Code_Optimization/2026-03-05-2-c-memory-usage %})

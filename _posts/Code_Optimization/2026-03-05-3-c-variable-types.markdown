@@ -3,7 +3,7 @@ layout: post
 title: "변수 타입 사용"
 date: 2026-03-05 12:00:00 +0900
 categories: Code Optimization
-show_on_home: true
+show_on_home: false
 ---
 
 # 변수 타입 사용
