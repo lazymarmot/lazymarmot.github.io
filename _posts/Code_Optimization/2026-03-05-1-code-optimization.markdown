@@ -3,7 +3,7 @@ layout: post
 title: "코드 최적화"
 date: 2026-03-05 12:00:00 +0900
 categories: Code Optimization
-show_on_home: false
+show_on_home: true
 ---
 
 # 코드 최적화

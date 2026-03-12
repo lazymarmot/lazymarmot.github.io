@@ -3,7 +3,7 @@ layout: post
 title: "분기문은 어떻게 쓰면 좋나"
 date: 2026-03-05 12:20:00 +0900
 categories: Code Optimization
-show_on_home: false
+show_on_home: true
 ---
 
 # 분기문은 어떻게 쓰면 좋나

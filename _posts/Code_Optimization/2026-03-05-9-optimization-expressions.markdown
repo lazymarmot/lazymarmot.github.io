@@ -3,7 +3,7 @@ layout: post
 title: "최적화 하기 위한 표현들"
 date: 2026-03-05 12:40:00 +0900
 categories: Code Optimization
-show_on_home: false
+show_on_home: true
 ---
 
 # 최적화 하기 위한 표현들

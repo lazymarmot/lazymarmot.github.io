@@ -3,7 +3,7 @@ layout: post
 title: "루프는 어떻게 쓰면 좋을까"
 date: 2026-03-05 12:10:00 +0900
 categories: Code Optimization
-show_on_home: false
+show_on_home: true
 ---
 
 # 루프는 어떻게 쓰면 좋을까
