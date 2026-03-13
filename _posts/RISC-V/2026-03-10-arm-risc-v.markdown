@@ -1,0 +1,88 @@
+---
+layout: post
+title: "ARM 과 RISC-V"
+date: 2026-03-10 12:10:00 +0900
+categories: RISC-V
+show_on_home: false
+---
+
+# ARM 과 RISC-V
+
+ARM = ‘완성품 중심 RISC’
+
+RISC-V = ‘설계도 중심 RISC’
+
+같은 RISC철학이지만 누가 주도권을 쥐고 있느냐가 다름
+
+![image.png](/assets/posts_image/RISC-V/ARM_RISC-V/image.png)
+
+![image.png](/assets/posts_image/RISC-V/ARM_RISC-V/image1.png)
+
+![image.png](/assets/posts_image/RISC-V/ARM_RISC-V/image2.png)
+
+누가 통제하느냐 (제일 본질적인 차이)
+
+| ARM | RISC-V |
+| --- | --- |
+| ISA 설계 : ARM
+코어 설계 : ARM
+확장 방향 : ARM이 결정
+
+ARM은 ARM이 모든 큰 결정 함 | ISA : 공개
+코어 설계 : 각 회사 마음
+확장 : 네가 정의
+
+RISC-V는 RISC-V international에서 규칙만 관리함 |
+
+### ARM ISA
+
+- 명령어 많음
+    - addressing mode 다양
+    - SIMD, system 명령 강력
+    - backward compatibility 엄청 중요
+    
+    ARM은:
+    
+    ```c
+    LDP x0, x1, [x2], #16
+    
+    -> load + 주소 증가까지 한 번에
+    → 성능 좋고 코드 밀도 높음
+    → 대신 디코더 & 검증이 빡셈
+    ```
+    
+
+### RISC-V ISA
+
+- 기본 명령어 **아주 최소**
+    - 확장은 모듈식
+    - 불필요한 기능 없음
+    
+    RISC-V는:
+    
+    ```c
+    lw x1, 0(x2)
+    addi x2, x2, 4
+    
+    -> “한 명령 = 한 일”
+    -> 하드웨어 설계자 친화적
+    ```
+    
+
+확장 방식 차이
+
+| 항목 | ARM | RISC-V |
+| --- | --- | --- |
+| 확장 주도 | ARM | 사용자 |
+| 커스텀 명령 | 거의 불가 | 매우 쉬움 |
+| AI/가속기 | ARM 제공 범위 | 회사 전용 가능 |
+|- ARM: NEON / SVE 범위 안에서 최적화
+- RISC-V: `X_ai_dotprod` 같은 **자체 명령 추가**
+    
+    ⇒ 그래서 AI·반도체 스타트업은 RISC-V로 감
+    
+
+[코어 설계란?](ARM%20%EA%B3%BC%20RISC-V/%EC%BD%94%EC%96%B4%20%EC%84%A4%EA%B3%84%EB%9E%80%202ed6feb16a3e80639de4eac64f1dd0b1.md)
+
+[RISC-V](ARM%20%EA%B3%BC%20RISC-V/RISC-V%202ed6feb16a3e807fbe9ecfbc564038c7.md)
+
