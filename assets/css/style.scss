@@ -11,3 +11,14 @@
   @import "toggle";
   @import "dark";
 {%- endif -%}
+
+blockquote {
+  border-left: 4px solid #ccc;
+  padding-left: 1rem;
+}
+
+.callout {
+  padding: 12px;
+  border-left: 4px solid #f59e0b;
+  background: #727272;
+}

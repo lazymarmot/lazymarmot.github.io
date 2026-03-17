@@ -6,9 +6,12 @@ categories: AXI4 AMBA
 show_on_home: false
 ---
 
-AXI4 is a high‑performance AMBA on‑chip bus protocol that separates address/control and data phases, allows multiple outstanding and out‑of‑order transactions, and is optimized for high‑bandwidth, low‑latency access to shared memories in modern SoCs.
 
 # Overview
+
+이 섹션에서는 AXI4 스펙의 전반적인 목적과 등장 배경을 간단히 정리한 뒤, 뒤에서 각 세부 항목을 순서대로 살펴볼라고 한다.
+
+<br>
 
 ## 1. 왜 만들어졌냐?
 
@@ -23,6 +26,8 @@ AXI4 is a high‑performance AMBA on‑chip bus protocol that separates address/
 
 ⇒ 앞 요청이 끝나기 전까지 다음 요청을 못 보내도록 구조적으로 고정되어 있다.
 
+<br>
+
 예) AHB로 메모리 읽기
 
 CPU가 메모리에서 4개의 데이터를 읽고 싶다면 아래와 같이 진행된다. 
@@ -36,54 +41,61 @@ Cycle 5: 주소 C
 Cycle 6: 데이터 C + 응답
 ...
 ```
+<br>
 
 그러나 SoC의 모듈들은 대부분 아래와 같은 구조로 연결 되어 있기 때문에  APB/AHB 방식을 계속 사용하게 되면 문제가 발생한다.
 
+```
 CPU  ─┐
 DMA  ─┼─> Memory
 GPU  ─┘
-
+```
 만일 이런 구조에서 AHB는,
 
 “CPU 에러 read 시작 → 버스에서는 지금 트랜잭션 처리 중 → DMA 대기, GPU 대기 “
 
-이런 현상들이 지속되면 버스가 병목(Bottleneck)이 걸리고 만다. 
+<span style="color:red">이런 현상들이 지속되면 버스가 병목(Bottleneck)이 걸리고 만다.</span>
 
-<aside>
-💡
+```smalltalk
+💡파이프라인
 
-**파이프라인**
+ AHB = 순차 처리
+ AXI = 파이프라인 처리
 
-“줄 서서 한 명씩” vs “컨베이어 벨트”
+ “줄 서서 한 명씩” vs “컨베이어 벨트”
 
-1. 파이프라인 없는 방식 (AHB)
-    
-    사람 A: 접수 → 처리 → 끝
-    사람 B: 접수 → 처리 → 끝
-    사람 C: 접수 → 처리 → 끝
-    
-    A가 끝나야 B 시작
-    
-    B가 끝나야 C 시작
-    
-    이게 AHB, APB 방식 ⇒ 한 트랜잭션이 끝나야 다음 가능
-    
-2. 파이프라인 방식 (AXI)
-    
-    컨베이어 벨트가 있다고 해보자
-    
-    [접수] → [처리] → [완료]
-    
-    시간 흐름
-    
-    시간1: A 접수
-    시간2: A 처리 | B 접수
-    시간3: A 완료 | B 처리 | C 접수
-    시간4: B 완료 | C 처리
-    
-    A가 아직 처리 중인데, B는 이미 접수 중이고, C도 들어오고 있음 
-    
-</aside>
+ ### 1. 파이프라인 없는 방식 (AHB)
+
+ 사람 A: 접수 → 처리 → 끝
+ 사람 B: 접수 → 처리 → 끝
+ 사람 C: 접수 → 처리 → 끝
+
+ A가 끝나야 B 시작
+ B가 끝나야 C 시작
+
+ ⇒ 이게 AHB / APB 방식
+ 한 트랜잭션이 끝나야 다음 트랜잭션 가능
+
+ ---
+
+ ### 2. 파이프라인 방식 (AXI)
+
+ 컨베이어 벨트가 있다고 해보자
+
+ `[접수] → [처리] → [완료]`
+
+시간 흐름
+
+ 시간1: A 접수 
+ 시간2: A 처리 | B 접수  
+ 시간3: A 완료 | B 처리 | C 접수
+ 시간4: B 완료 | C 처리
+
+ A가 아직 처리 중인데
+ B는 이미 접수 중이고
+ C도 들어오고 있음
+```
+<br>
 
 AXI 구조 (진짜 채널 분리)
 
@@ -91,8 +103,9 @@ AXI는 주소, 데이터, 응답을 분리해서 여러 거래를 동시에, 순
 
 AXI는 처음부터 채널을 독립적으로 사용
 
-> “AXI allows multiple outstanding transactions.”
-> 
+<blockquote>
+<p>“AXI allows multiple outstanding transactions.”</p>
+</blockquote>
 
 ```smalltalk
 주소 A 전송
@@ -120,11 +133,11 @@ Memory controller:
 
 IoT, 모바일, DSP, 네트워크 SoC, GPU등 아래와 같은 환경에서 AXI가 필요한다. 
 
-메모리 많이 씀
+- 메모리 많이 씀
 
-동시에 여러 엔진이 접근
+- 동시에 여러 엔진이 접근
 
-지연 1번이 전체 성능에 영향을 줌
+- 지연 1번이 전체 성능에 영향을 줌
 
 AXI 내부는 이렇게 겹쳐짐
 
@@ -138,11 +151,12 @@ AXI 내부는 이렇게 겹쳐짐
 
 예 2) 레지스터 초기화 예제 상황
 
-CPU또는 DMAC (AXI Master)
+<div style="margin-left:20px" markdown="1">
+CPU또는 DMAC (AXI Master)<br>
 
-GPIO (AXI Slave)
+GPIO (AXI Slave)<br>
 
-초기화 해야 할 레지스터  
+초기화 해야 할 레지스터  <br>
 
 ```
 	REG_A : 0x4000_0000 ← 0x0000_0001
@@ -170,6 +184,8 @@ AHB 방식
 파이프라인 안됨
 
 Clock을 올릴 수 없음
+
+<br>
 
 AXI 방식
 
@@ -209,7 +225,9 @@ t8 : BRESP OKAY
 
 ⇒ 요청된 순서가 완료된 순서와 같지 않을 수 있음
 
-“데이터는 준비되는 대로”의 진짜 의미
+</div><br>
+
+<span style="color:red">“데이터는 준비되는 대로”의 진짜 의미</span>
 
  ⇒ 주소 전송이 끝난 시점에 데이터가 아직 준비 안 돼 있어도 된다
 
@@ -236,6 +254,8 @@ AXI 프로토콜은 다음과 같은 설계에 적합하다
 
 🔹 AXI 프로토콜의 핵심 기능 (Key Features)
 
+<br>
+
 AXI 프로토콜의 주요 특징은 다음과 같다.
 
 - 주소/제어 단계와 데이터 단계를 분리
@@ -245,17 +265,3 @@ AXI 프로토콜의 주요 특징은 다음과 같다.
 - 여러 개의 주소 트랜잭션을 동시에 발행 가능
 - 트랜잭션 완료 순서가 요청 순서와 달라도 허용
 - 타이밍 클로저를 위해 레지스터 단을 쉽게 추가 가능
-
-[AXI Architecture](AMBA%20AXI4%20Spec/AXI%20Architecture%202e66feb16a3e80dbb036c1cb2d1ca736.md)
-
-[Channel Signaling Requirements](AMBA%20AXI4%20Spec/Channel%20Signaling%20Requirements%202e66feb16a3e806bb15ae33d0834bc39.md)
-
-[[SIGNAL] Global Signals](AMBA%20AXI4%20Spec/%5BSIGNAL%5D%20Global%20Signals%202e66feb16a3e800f9d2fd4d74e9ff556.md)
-
-[[SIGNAL] AVALID, AREADY  & Handshake](AMBA%20AXI4%20Spec/%5BSIGNAL%5D%20AVALID,%20AREADY%20&%20Handshake%202e66feb16a3e80f49f76df106fd4274d.md)
-
-[[SIGNAL] BURST & LEN & SIZE](AMBA%20AXI4%20Spec/%5BSIGNAL%5D%20BURST%20&%20LEN%20&%20SIZE%202e66feb16a3e809eb261f31d610e094d.md)
-
-[[SIGNAL] PROT](AMBA%20AXI4%20Spec/%5BSIGNAL%5D%20PROT%202e66feb16a3e808bab0febc95a6fb980.md)
-
-[[SIGNAL] CACHE](AMBA%20AXI4%20Spec/%5BSIGNAL%5D%20CACHE%202e66feb16a3e8084b3b4e27bfed1cbd0.md)

@@ -6,11 +6,13 @@ categories: AXI4 AMBA
 show_on_home: false
 ---
 
-# Channel Signaling Requirements
+<br>
+
+각 채널은 자신만의 VALID/READY 핸드셰이크 신호를 쌍으로 가진다.
 
 ![image.png](/assets/posts_image/AXI/Channel%20Signaling%20Requirements/image.png)
 
-각 채널은 자신만의 VALID/READY 핸드셰이크 신호를 쌍으로 가진다.
+<br>
 
 **Write Address Channel**
 
@@ -146,16 +148,13 @@ ARREADY의 기본 상태(default)는 HIGH일 수도 있고 LOW일 수도 있다.
 
 ARREADY가 HIGH인 경우, slave는 제시되는 어떤 유효한 주소라도 받아들일 수 있어야 한다.
 
-<aside>
-💡
-
-이 사양에서는 ARREADY의 기본값을 LOW로 두는 것을 권장하지 않는다.
+```smalltalk
+💡 이 사양에서는 ARREADY의 기본값을 LOW로 두는 것을 권장하지 않는다.
 
 그 이유는, ARREADY가 LOW이면 전송에 최소 두 클럭 사이클이 필요해지기 때문이다.
 
 하나는 ARVALID를 활성화하는 데, 또 하나는 ARREADY를 활성화하는 데 사용된다.
-
-</aside>
+```
 
 즉,
 

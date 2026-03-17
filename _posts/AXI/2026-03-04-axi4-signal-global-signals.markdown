@@ -14,55 +14,31 @@ show_on_home: false
 
 AXI Component는 단일 Clock 신호 ACLK를 사용한다.
 
-| **출력** | **입력** |
-| --- | --- |
-| **CPU의 출력 신호**
-CPU가 **구동(drives)** 하는 신호들
-• AWVALID
-• AWADDR
-• WDATA
-• WVALID
-• ARVALID
-• ARADDR
-• BREADY
-• RREADY
-👉 “내가 밖으로 내보내는 신호” | **CPU의 입력 신호**
-CPU가 **받아서 샘플링**하는 신호들
-• AWREADY
-• WREADY
-• BVALID
-• BRESP
-• RVALID
-• RDATA
-• RRESP
-👉 “상대(slave/인터커넥트)가 보내주는 신호” |
-| **GPIO의 출력 신호**
-• AWREADY
-• WREADY
-• BVALID
-• BRESP
-• RVALID
-• RDATA
-• RRESP | **GPIO의 입력 신호**
-• AWVALID
-• AWADDR
-• WVALID
-• WDATA
-• ARVALID
-• ARADDR
-• BREADY
-• RREADY
-👉 **같은 신호라도, 기준이 바뀌면 입력/출력이 바뀐다** |
+<table>
+<thead>
+<tr><th><strong>출력</strong></th><th><strong>입력</strong></th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CPU의 출력 신호</strong><br>CPU가 <strong>구동(drives)</strong> 하는 신호들<br>• AWVALID<br>• AWADDR<br>• WDATA<br>• WVALID<br>• ARVALID<br>• ARADDR<br>• BREADY<br>• RREADY<br>👉 "내가 밖으로 내보내는 신호"</td>
+<td><strong>CPU의 입력 신호</strong><br>CPU가 <strong>받아서 샘플링</strong>하는 신호들<br>• AWREADY<br>• WREADY<br>• BVALID<br>• BRESP<br>• RVALID<br>• RDATA<br>• RRESP<br>👉 "상대(slave/인터커넥트)가 보내주는 신호"</td>
+</tr>
+<tr>
+<td><strong>GPIO의 출력 신호</strong><br>• AWREADY<br>• WREADY<br>• BVALID<br>• BRESP<br>• RVALID<br>• RDATA<br>• RRESP</td>
+<td><strong>GPIO의 입력 신호</strong><br>• AWVALID<br>• AWADDR<br>• WVALID<br>• WDATA<br>• ARVALID<br>• ARADDR<br>• BREADY<br>• RREADY<br>👉 <strong>같은 신호라도, 기준이 바뀌면 입력/출력이 바뀐다</strong></td>
+</tr>
+</tbody>
+</table>
 
 모든 입력 신호는 ACLK의 상승 엣지에서 샘플링 된다.
 
 “입력 신호 = 밖에서 들어오는 말”
 
-Master 입장 : AWREADY, WREADY, RDATA
+- Master 입장 : AWREADY, WREADY, RDATA
 
-Slave 입장 : AWVALID, WDATA, ARADDR
+- Slave 입장 : AWVALID, WDATA, ARADDR
 
-샘플링 = "그 순간의 값을 읽어서 내부 레지스터에 저장"
+- 샘플링 = "그 순간의 값을 읽어서 내부 레지스터에 저장"
 
 언제? = > ACLK 상승 엣지 딱 그 순간 (엣지 순간 값만 본다)
 
@@ -78,9 +54,9 @@ end
 
 “출력신호 = 내가 밖으로 말하는 것”
 
-Mastser 입장 : AWVALID, WDATA
+- Mastser 입장 : AWVALID, WDATA
 
-Slave 입장 :AWREADY, RVALID
+- Slave 입장 :AWREADY, RVALID
 
 => 엣지에서 계산하고, 엣지가 지나고 나서 바꿔라
 
