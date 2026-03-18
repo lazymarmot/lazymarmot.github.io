@@ -6,9 +6,9 @@ categories: Build Upload
 show_on_home: false
 ---
 
-# main 호출은 누가 할까
-
 임베디드 환경에서 main함수를 누가, 어떻게 호출 하는 걸까?
+
+<br>
 
 ### 로딩 단계
 
@@ -21,6 +21,8 @@ show_on_home: false
 - JTAG/다운로더(OpenOCD, ST-Link 등..)가 Flash/RAM에 write한다.
 - 부트로더(U-boot같은) 또는 ROM 부트가 FLASH에서 RAM으로 옮겨줌
 - 그냥 FLASH에서 XIP로 실행(코드 그대로 실행)
+
+<br>
 
 ### 타겟 보드에 펌웨어 업로드
 
@@ -52,6 +54,7 @@ JTAG / ST-Link로 개발할 때 (디버깅 모드)
 	  [ .rodata ]
 	  [ .data 초기값 ]
 ```
+<br>
 
 ### 타겟 보드 부팅
 
@@ -164,8 +167,9 @@ CPU는 하드웨어 규칙에 따라 시작하게 되는데,
     				bar = 0x80000120
     		이 계산은 startup 코드에도 그대로 적용됨
     ```
-    
-    <스타트업 코드가 쓰는 심볼>
+    <br>
+
+    ***스타트업 코드가 쓰는 심볼***
     
     - 왼쪽 : ELF/C 언어 관점 구조
     - 오른쪽 : 스타트업/로더 관점 구조
@@ -181,6 +185,8 @@ CPU는 하드웨어 규칙에 따라 시작하게 되는데,
     rw-data 세그먼트의 시작주소는 rw-base이고 끝 주소는 zi 세그먼트의 시작 주소와 같기 때문에 zi-base 심볼을 이용하면 된다.
     
     zi 세그먼트의 시작 주소는 zi-base 끝 주소는 zi-limit를 사용한다.
+    
+    <br>
     
     **startup 코드가 하는 일**
     
@@ -839,7 +845,7 @@ CPU는 하드웨어 규칙에 따라 시작하게 되는데,
     RAM의 bss 영역을 전부 0으로 초기화 (memset(0))
     ```
     
-    <startup 코드 예시>
+    ***startup 코드 예시***
     
     ```markdown
     ARMv7-A (4byte(word) 단위로 0 채움)
@@ -960,74 +966,12 @@ CPU는 하드웨어 규칙에 따라 시작하게 되는데,
         ```
         
         왜 모드 별 스택을 나눠서 쓸까?
-        
-        | 예외 중첩 안정성 | IRQ 처리 중에 Data Abort 발생 가능성이 있어서, 각자 스택을 쓰면서 서로 침범이 없게 함
-        
-        ※ 예외 발생 시 CPU가 하는 일
-          정상 실행 중(SVC 모드)
-               SP = SP_svc
-        
-        IRQ 발생
-          CPU가 자동으로 실행 : (이 단계 까지는 스택 안쓰고 레지스터에 저장)
-                CPSR → SPSR_irq
-                PC → LR_irq
-                모드 전환 : SVC → IRQ
-                SP 레지스터 전환  : SP_svc → SP_irq
-           SP = SP_irq
-        
-        IRQ 핸들러 
-        (IRQ 핸들러 시작부에서 보통 이런 코드 있음)
-                  irq_handler:
-                        sub sp, sp, #64
-                        stmfd sp!, {r0-r12, lr}
-                 r0 ~ r12 (작업 중 쓸 레지스터) → push
-                 lr (IRQ에서 복귀 할 주소)  → push
-        
-        IRQ 처리 중 Data Abort 발생 
-          ABT 진입 시
-          CPU가 다시 자동으로 실행
-                현재 PC → LR_abt
-                CPSR → SPSR_abt
-                모드 전환 : IRQ → ABT
-                SP 레지스터 전환 : SP_irq → SP_abt
-                ABT 핸들러 시작
-               abt_handler:
-                     sub sp, sp, #64      
-                     stmfd sp!, {r0-r12, lr}
-               스택에 push 발생함
-            SP = SP_abt
-        
-        <스택 메모리 구조>
-        RAM:
-        [ SVC stack ]   ← SP_svc가 가리킴
-        [ IRQ stack ]   ← SP_irq가 가리킴 (IRQ 진입 시 push는 IRQ 스택에서만 발생)
-        [ ABT stack ]   ← SP_abt가 가리킴(ABT진입 시 push는 ABT 스택에서만 발생)
-        
-        만일 모든 모드가 SP 하나를 쓴다면?
-              IRQ 진입 → push (복귀에 필요한 정보(LR, CPSR, 레지스터)를 스택에 push)
-              IRQ 처리 중 ABT 발생 → push
-              ABT 복귀 → pop
-              IRQ 복귀 → pop
-        
-        SP →
-        +-----------------+
-        | IRQ r0                  |
-        | IRQ r1                   |
-        | ...                           |
-        | IRQ lr                   |
-        +-----------------+
-        | ABT r0                 |  ← ABT가 여기부터 덮어씀
-        | ABT r1                  |
-        | ...                           |
-        | ABT lr                   |
-        +-----------------+
-        ⇒ 스택 프레임 섞임, 복귀 주소 깨질 수 있어서 복귀 불가 (Crash)
-         |
+
+        | 항목 | 설명 |
         | --- | --- |
-        | 디버깅/안정성 | Abort 스택이 따로 있으면, 메모리 오류 시 최소한의 상태 보존이 가능하다.  |
-        | 커널 설계 | 실제 OS에는 스택 분리가 필수이다
-            SVC = 커널
-             IRQ/FIQ = 인터럽트 컨텍스트로  |
+        | 예외 중첩 안정성 | IRQ 처리 중에 Data Abort 발생 가능성이 있어서, 각자 스택을 쓰면서 서로 침범이 없게 함.<br><br>※ 예외 발생 시 CPU가 하는 일<br>정상 실행 중 (SVC 모드):<br>&nbsp;&nbsp;SP = SP_svc<br><br>IRQ 발생 시, CPU가 자동으로 수행:<br>&nbsp;&nbsp;CPSR → SPSR_irq<br>&nbsp;&nbsp;PC → LR_irq<br>&nbsp;&nbsp;모드 전환: SVC → IRQ<br>&nbsp;&nbsp;SP 레지스터 전환: SP_svc → SP_irq (SP = SP_irq)<br><br>IRQ 핸들러 진입 후 보통 하는 일:<br>&nbsp;&nbsp;irq_handler:<br>&nbsp;&nbsp;&nbsp;&nbsp;sub sp, sp, #64<br>&nbsp;&nbsp;&nbsp;&nbsp;stmfd sp!, {r0-r12, lr}<br>&nbsp;&nbsp;r0~r12 (작업용 레지스터) push, lr(복귀 주소) push<br><br>IRQ 처리 중 Data Abort 발생 시, ABT 진입 과정:<br>&nbsp;&nbsp;현재 PC → LR_abt<br>&nbsp;&nbsp;CPSR → SPSR_abt<br>&nbsp;&nbsp;모드 전환: IRQ → ABT<br>&nbsp;&nbsp;SP 레지스터 전환: SP_irq → SP_abt (SP = SP_abt)<br>&nbsp;&nbsp;ABT 핸들러 시작:<br>&nbsp;&nbsp;abt_handler:<br>&nbsp;&nbsp;&nbsp;&nbsp;sub sp, sp, #64<br>&nbsp;&nbsp;&nbsp;&nbsp;stmfd sp!, {r0-r12, lr}<br><br>&lt;스택 메모리 구조&gt;<br>RAM 상에서:<br>&nbsp;&nbsp;[ SVC stack ]  ← SP_svc<br>&nbsp;&nbsp;[ IRQ stack ]  ← SP_irq (IRQ 진입 시 push는 여기에서만 발생)<br>&nbsp;&nbsp;[ ABT stack ]  ← SP_abt (ABT 진입 시 push는 여기에서만 발생)<br><br>만일 모든 모드가 SP 하나를 쓴다면?<br>&nbsp;&nbsp;IRQ 진입 → push (복귀에 필요한 LR, CPSR, 레지스터들)<br>&nbsp;&nbsp;IRQ 처리 중 ABT 발생 → push<br>&nbsp;&nbsp;ABT 복귀 → pop<br>&nbsp;&nbsp;IRQ 복귀 → pop<br><br>SP 위의 스택 프레임 예시:<br>&nbsp;&nbsp;IRQ r0, IRQ r1, ... , IRQ lr<br>&nbsp;&nbsp;그 위에 ABT r0, ABT r1, ... , ABT lr 이 덮어써짐<br><br>⇒ 스택 프레임이 섞여서 복귀 주소가 깨질 수 있고, 결국 복귀 불가(Crash) 상황이 발생할 수 있다. |
+        | 디버깅/안정성 | Abort 스택이 따로 있으면, 메모리 오류 시 최소한의 상태 보존이 가능하다. |
+        | 커널 설계 | 실제 OS에는 스택 분리가 필수이다.<br>SVC = 커널 모드<br>IRQ/FIQ = 인터럽트 컨텍스트 |
         
         | 구분 | Cortex-M | Cortex-A |
         | --- | --- | --- |

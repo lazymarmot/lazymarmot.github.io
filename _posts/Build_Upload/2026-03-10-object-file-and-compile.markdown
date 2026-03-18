@@ -92,12 +92,9 @@ ELF Header
 
 | relocation ELF | 실행 가능 파일 ELF |
 | --- | --- |
-| 섹션 중심
-심볼 많음
-relocation 정보 있음 | program header(PT_LOAD)있음
-섹션보다 segment가 중요
-커널/부트로더가 바로 로딩함
-.symtab, .debug 보통 없음 |
+| 섹션 중심<br>심볼 많음<br>relocation 정보 있음 | program header(PT_LOAD) 있음<br>섹션보다 segment가 중요<br>커널/부트로더가 바로 로딩함<br>.symtab, .debug 보통 없음 |
+
+<br>
 
 ## 컴파일 과정
 
@@ -112,6 +109,8 @@ gcc test.c -o test
 위 명령을 사용해서 빌드하고 실행파일을 최종적으로 만드는데, 
 
 실질적으로는 여러 단계의 작업이 이루어 진다.
+
+<br>
 
 ### 전처리 단계 (전처리기)
 
@@ -136,6 +135,7 @@ cpp0 test.c /tmp/test.i
     int a[10];
     ```
     
+<br>
 
 ### 컴파일 단계 (컴파일러)
 
@@ -157,6 +157,7 @@ cc1 /tmp/test.i -o /tmp/test.s
     add r0, r0, #1
     ```
     
+<br>
 
 ### 어셈블러 단계 (어셈블러)
 
@@ -173,6 +174,8 @@ as /tmp/test.s -o /tmp/test.o
     - relocation 정보 생성
 - ELF relocatable object생성
 - 주소 미확정 상태
+
+<br>
 
 ### 링크 단계 (링커)
 
@@ -282,7 +285,9 @@ ld /tmp/test.o /tmp/test2.o -o test
     
 ![image.png](/assets/posts_image/Build_Upload/object_file_and_compile/image1.png)
 
-섹션 병합 전 심볼 수집 단계 
+<br>
+
+<span stype="color:green"><strong>섹션 병합 전 심볼 수집 단계</strong></span>
 
 섹션 병합 단계에서는 아래 내용의 정보들이 생성된다. 
 
@@ -308,6 +313,7 @@ ld /tmp/test.o /tmp/test2.o -o test
 		참조 심볼: bar
 		relocation 타입: R_ARM_CALL
 ```
+<br>
 
 링커 내부 심볼 테이블에는 어떤 정보들이 들어갈까???
 
@@ -521,7 +527,7 @@ Key to Flags:
 root@lazymarmot:~#
 ```
 
-```c
+
 | 네 그림 | 확인 명령 |
 | --- | --- |
 | ELF Header | `readelf -h` |
@@ -529,7 +535,6 @@ root@lazymarmot:~#
 | .text/.data 실제 데이터 | `readelf -l`의 LOAD + `objdump -d` |
 | Section Headers | `readelf -S` |
 | 파일 배치 감각 | `hexdump -C` |
-```
 
 startup.s에는 주로 .text만 있고 .data가 없는 경우도 있는데 .data가 있으면
 
@@ -615,8 +620,8 @@ Reset_Handler:
     
     심볼 테이블에도 배치나 재배치를 할 때 필요한 “프로그램의 심볼 정의”나 “참조 값에 대한 정보” “심볼 바인딩 정보”가 들어있다. 
     
-    <심볼 테이블 예시>
-    
+    **심볼 테이블 예시**
+
     | 항목 | 설명 |
     | --- | --- |
     | 이름 | foo, bar, g_var |
@@ -625,6 +630,8 @@ Reset_Handler:
     | 최종 섹션 | .text / .data / .bss |
     | 최종 주소 | 0x80001000 |
     | 가시성 | local/global |
+    
+    <br>
     
     심볼 바인딩을 기반으로 심볼 해석, 심볼 값 확정을 하게 되는데 이때,
     
@@ -654,28 +661,12 @@ Reset_Handler:
     
     | 이름 | 설명 | 값 |
     | --- | --- | --- |
-    | STB_LOCAL | 파일 내부에서만 보임
-    static 함수/변수
-    다른 .o 에서 절대 접근 불가
-    static int a;
-    static void f(void); | 0 |
-    | STB_GLOBAL | 모든 .o에서 참조 가능
-    다른 파일에서 참조하는 글로벌 심볼 / 다른 파일에서 정의되고, 현재 파일에서 참조하는 글로벌 심볼로 나뉨
-    int g;
-    void foo(void);
-     | 1 |
-    | STB_WEAK | 글로벌이긴 한데 우선순위가 낮음
-    같은 이름의 GLOBAL이 있으면 자동으로 밀림
-    여러개 있어도 에러가 아님
+    | STB_LOCAL | 파일 내부에서만 보임<br>static 함수/변수<br>다른 .o 에서 절대 접근 불가<br>static int a;<br>static void f(void); | 0 |
+    | STB_GLOBAL | 모든 .o에서 참조 가능<br>다른 파일에서 참조하는 글로벌 심볼 / 다른 파일에서 정의되고, 현재 파일에서 참조하는 글로벌 심볼로 나뉨<br>int g;<br>void foo(void); | 1 |
+    | STB_WEAK | 글로벌이긴 한데 우선순위가 낮음<br>같은 이름의 GLOBAL이 있으면 자동으로 밀림<br>여러개 있어도 에러가 아님<br><br>// weak.c<br>int __attribute__((weak)) x;<br>// strong.c<br>int x;<br>⇒ x는 strong쪽을 선택하고 weak는 무시됨 | 2 |
+    | STB_LOPROC / STB_HIPROC | 아키텍처/프로세서의 사용을 위해 예약된 값 | 13/15 |
     
-    // weak.c
-    int **attribute**((weak)) x;
-    // strong.c
-    int x;
-    ⇒ x는 strong쪽을 선택하고 weak는 무시됨 | 2 |
-    | STB_LOPROC /
-    STB_HIPROC | 아키텍처/프로세서의 사용을 위해 예약된 값 | 13/15 |
-    
+
     같은 이름의 글로벌 심볼 규칙
     
     ```c
@@ -761,39 +752,41 @@ Reset_Handler:
     	요렇게 변경됨 (처음으로 절대주소가 생김)
     ```
     
-섹션 병합 하면서 확정된 섹션 시작 주소를 기준으로,
+    섹션 병합 하면서 확정된 섹션 시작 주소를 기준으로,
 
-섹션 내부 offset + 시작 주소 ⇒ 심볼 절대 주소 계산 및 확정한다. 
+    섹션 내부 offset + 시작 주소 ⇒ 심볼 절대 주소 계산 및 확정한다. 
 
-이 단계 이후 링커 내부 심볼 테이블이 아래 처럼 변경됨
+    이 단계 이후 링커 내부 심볼 테이블이 아래 처럼 변경됨
 
-```c
-foo → 0x08000000 + offset_a
-bar → 0x08000000 + offset_b
+    ```c
+    foo → 0x08000000 + offset_a
+    bar → 0x08000000 + offset_b
 
-예를 들어
-	offset_a = 0x40
-	offset_b = 0x120
+    예를 들어
+	    offset_a = 0x40
+	    offset_b = 0x120
 	
-	이러면
+	    이러면
 	
-	foo = 0x08000040
-	bar = 0x08000120
-	요렇게 변경됨 (처음으로 절대주소가 생김)
-```
+	    foo = 0x08000040
+	    bar = 0x08000120
+	    요렇게 변경됨 (처음으로 절대주소가 생김)
+    ```
 
-결론:
+    결론:
 
-이미 정해진 레이아웃 기준으로
+    이미 정해진 레이아웃 기준으로
 
-```c
-bar_addr = .text_start + bar_offset
-```
+    ```c
+    bar_addr = .text_start + bar_offset
+    ```
 
-- bar의 절대 주소 숫자를 계산/확정
-- 내부 심볼 테이블에 저장
+    - bar의 절대 주소 숫자를 계산/확정
+    - 내부 심볼 테이블에 저장
 
-1. 재배치 (Relocation)
+<br>
+
+3. 재배치 (Relocation)
     
     심볼 정의와 심볼 참조를 연결하는 과정
     
