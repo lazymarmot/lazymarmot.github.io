@@ -24,15 +24,9 @@ RISC-V = ‘설계도 중심 RISC’
 
 | ARM | RISC-V |
 | --- | --- |
-| ISA 설계 : ARM
-코어 설계 : ARM
-확장 방향 : ARM이 결정
+| ISA 설계 : ARM<br>코어 설계 : ARM<br>확장 방향 : ARM이 결정<br><br>ARM은 ARM이 모든 큰 결정을 함 | ISA : 공개<br>코어 설계 : 각 회사 마음<br>확장 : 네가 정의<br><br>RISC-V는 RISC-V International에서 규칙만 관리함 |
 
-ARM은 ARM이 모든 큰 결정 함 | ISA : 공개
-코어 설계 : 각 회사 마음
-확장 : 네가 정의
-
-RISC-V는 RISC-V international에서 규칙만 관리함 |
+<br>
 
 ### ARM ISA
 
@@ -51,6 +45,7 @@ RISC-V는 RISC-V international에서 규칙만 관리함 |
     → 대신 디코더 & 검증이 빡셈
     ```
     
+<br>
 
 ### RISC-V ISA
 
@@ -76,13 +71,16 @@ RISC-V는 RISC-V international에서 규칙만 관리함 |
 | 확장 주도 | ARM | 사용자 |
 | 커스텀 명령 | 거의 불가 | 매우 쉬움 |
 | AI/가속기 | ARM 제공 범위 | 회사 전용 가능 |
-|- ARM: NEON / SVE 범위 안에서 최적화
+
+- ARM: NEON / SVE 범위 안에서 최적화
 - RISC-V: `X_ai_dotprod` 같은 **자체 명령 추가**
     
     ⇒ 그래서 AI·반도체 스타트업은 RISC-V로 감
     
+<br>
+---
+<br>
 
-[코어 설계란?](ARM%20%EA%B3%BC%20RISC-V/%EC%BD%94%EC%96%B4%20%EC%84%A4%EA%B3%84%EB%9E%80%202ed6feb16a3e80639de4eac64f1dd0b1.md)
+[코어 설계란?]({% post_url RISC-V/2026-03-10-core-design %})
 
-[RISC-V](ARM%20%EA%B3%BC%20RISC-V/RISC-V%202ed6feb16a3e807fbe9ecfbc564038c7.md)
-
+[RISC-V]({% post_url RISC-V/2026-03-10-risc-v-overview %})

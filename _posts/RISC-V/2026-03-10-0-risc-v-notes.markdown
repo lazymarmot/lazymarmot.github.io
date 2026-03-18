@@ -9,8 +9,7 @@ show_on_home: true
 RISC-V 아키텍처와 코어 설계, ARM과의 비교에 대한 내용을 살펴보기 위해
 ISA, 마이크로아키텍처, 시스템 구조를 단계적으로 정리했다.
 
-- [ARM 과 RISC-V]({% post_url RISC-V/2026-03-10-arm-risc-v %})
-- [코어 설계란?]({% post_url RISC-V/2026-03-10-core-design %})
 - [RISC와 CISC]({% post_url RISC-V/2026-03-10-risc-cisc %})
-- [RISC-V]({% post_url RISC-V/2026-03-10-risc-v-overview %})
+- [ARM 과 RISC-V]({% post_url RISC-V/2026-03-10-arm-risc-v %})
+
 

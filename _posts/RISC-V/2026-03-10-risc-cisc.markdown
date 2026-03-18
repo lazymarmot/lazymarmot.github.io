@@ -6,8 +6,6 @@ categories: RISC-V
 show_on_home: false
 ---
 
-# RISC와 CISC
-
 ![image.png](/assets/posts_image/RISC-V/RISC_CISC/image.png)
 
 ![image.png](/assets/posts_image/RISC-V/RISC_CISC/image1.png)
@@ -46,6 +44,8 @@ show_on_home: false
     | --- | --- |
     | 소프트웨어 같음 | 명령 순서가 “프로그램”처럼 저장됨 |
     | 하드웨어 같음 | CPU 안 ROM에 들어 있음 |
+
+<br>
 
 ### RISC (Reduced Instruction Set Computer)
 
