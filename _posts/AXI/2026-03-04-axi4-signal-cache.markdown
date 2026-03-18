@@ -6,7 +6,6 @@ categories: AXI4 AMBA
 show_on_home: false
 ---
 
-# [SIGNAL] CACHE
 
 AXI에서 트랜잭션이란 :
 
@@ -48,8 +47,9 @@ Write Transaction
     
     이 3단계 전체가 합쳐져서 1개의 write transaction
     
+<br>
 
-**Transaction types and Attributes**
+<span style="color:green">**Transaction types and Attributes**</span>
 
 AXI에서 분리해서 봐야 할 것
 
@@ -71,8 +71,11 @@ AXI에서 분리해서 봐야 할 것
     
     Burst / Single
     
+<br>
 
-“Slave의 성격(type)에 따라 어떤 트랜잭션 속성(AxCACHE 등)을 지원해야 하느냐 가 달라진다. “
+<span style="color:red">“Slave의 성격(type)에 따라 어떤 트랜잭션 속성(AxCACHE 등)을 지원해야 하느냐 가 달라진다."</span>
+
+<br>
 
 1. Memory Slave
     1. 메모리 슬레이브는 AXI가 제공하는 모든 속성(AxCACHE등)이 의미가 있도록 설계되어야 한다.
@@ -110,9 +113,9 @@ AXI에서 분리해서 봐야 할 것
     4. 주변장치 슬레이브는 대부분 고급 트랜잭션 속성을 지원하지 않아도 된다.
     5. 주변장치 슬레이브는 구현 정의(implemetation defined)방식의 접근 방법을 갖는다
         
-        <aside>
+        ```smalltalk
         💡
-        
+
         구현 정의(implementation defined) 접근 방식  
         
         이 주변 장치가 '정상적으로 동작한다고 보장하는 접근 규칙'을 AXI가 아니라 
@@ -151,7 +154,7 @@ AXI에서 분리해서 봐야 할 것
         
         예 : " 이 레지스터는 32bit write만 지원", "burst access 금지", "unaligned access금지”
         
-        </aside>
+        ```
         
         주변장치 슬레이브에 대해 "구현 정의된 접근 방식이 아닌 접근"이 발생해도 그 접근은 "AXI 프로토콜을 준수"해서 완료되어야 한다.
         
@@ -166,7 +169,9 @@ AXI에서 분리해서 봐야 할 것
         단, 이후의 트랜잭션들도 프로토콜 측면에서는 정상적으로 완료되어야 한다.
         
 
-**Transaction Attribute**
+<br>
+
+<span style="color:green">**Transaction Attribute**</span>
 
 AXI 프로토콜은 “메모리 슬레이브”와 “주변장치 슬레이브”를 지원하기 위해 트랜잭션 속성(attribute)집합을 정의 한다.
 
@@ -359,16 +364,29 @@ UART register access:
         
         - peripheral register 였다면 절대 하면 안되는 동작이기 때문에 AxCACHE를 보고 결정
         
-        | **AxCACHE[0] = Bufferable** | **AxCACHE[1] = Cacheable** |
-        | --- | --- |
-        | “이 write는 중간에 잠시 쌓여도 된다
-        즉, 즉시 observable 할 필요 없다”
-        
-        이게 write buffer / merge의 최소 조건 | “이 접근 대상은 메모리처럼 동작한다
-        (중간 상태보다 최종 값이 중요)
-        최적화 해도 된다”
-        
-        reorder / merge / speculative 해도 의미가 깨지지 않는다 |
+        <table>
+        <thead>
+        <tr>
+            <th><strong>AxCACHE[0] = Bufferable</strong></th>
+            <th><strong>AxCACHE[1] = Cacheable</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                “이 write는 중간에 잠시 쌓여도 된다<br>
+                즉, 즉시 observable 할 필요 없다”<br><br>
+                이게 write buffer / merge의 최소 조건
+            </td>
+            <td>
+                “이 접근 대상은 메모리처럼 동작한다<br>
+                (중간 상태보다 최종 값이 중요)<br>
+                최적화 해도 된다”<br><br>
+                reorder / merge / speculative 해도 의미가 깨지지 않는다
+            </td>
+        </tr>
+        </tbody>
+        </table>
     3. 순서를 보장해야 하나?
         - AxCACHE = non-cacheable
             - 강한 순서 보장
@@ -411,6 +429,8 @@ UART register access:
     
     ```
     
+    <br>
+
     **예 2) CPU L2/L3 Cache / Snoop Logic**
     
     Cacheable = 0인데 캐시에 넣으면 치명적 버그 발생됨
@@ -420,7 +440,7 @@ UART register access:
     ⇒ 계속 같은 값 만 읽힘
     
     그래서 AxCACHE[1] = 0 (캐시 할당 금지) 로 함
-    
+    <br>
     < 캐시에 캐시 한다는 내용을 전달하는 구조>
     
     L2/L3 캐시가 AXI 버스의 AxCACHE핀을 물리적으로 관찰 하는게 아니라, 
@@ -456,6 +476,8 @@ UART register access:
     
     둘 다 같은 원본(MMU 결과)를 CPU 내부에서 받아서 쓰는것임
     
+    <br>
+
     UART 기반 예시
     
     상황 : CPU가 UART 레지스터 읽기
@@ -469,7 +491,7 @@ UART register access:
     - Device Memory
     - Non-cacheable
     - Strongly-ordered or device-nGnRnE
-    
+    <br>
     이 때 내부에서 벌어지는 일
     
     1. CPU 내부 결정
@@ -485,7 +507,7 @@ UART register access:
         - 그대로 UART로 전달
     4. UART
         - 실제 하드웨어 레지스터 값 반환
-    
+    <br>
     만일 캐시가 UART 설정 상관 없이 지 맘대로 캐시 처리 하면?
     
     - cacheable로 처리 해버린다면?
@@ -501,6 +523,8 @@ UART register access:
     
     ![image.png](/assets/posts_image/AXI/SIGNAL%20CACHE/image%201.png)
     
+    <br>
+
     **예 3) Peripheral Slave (UART, GPIO, DMA Reg)**
     
     AxCACHE 보통 안 씀
@@ -519,6 +543,8 @@ UART register access:
         - undefined behavior
         - 또는 DECERR
     
+    <br>
+
     **예 4) Memory Controller (DDR Controller)**
     
     memory controller는 CPU가 설정한 cacheable/bufferable 속성(AxCACHE)의 의미를 직접 또는 interconnect를 통해 반영하여 write buffer / write combine / ordering 정책을 결정한다.
@@ -531,12 +557,12 @@ UART register access:
     여기서 시스템에는 : Interconnect, cache, memory controller(DDR controller)가 포함
     
     즉, 메모리 컨트롤러도 AxCACHE 속성의 영향을 받는 구성 요소임
-    
+    <br>
     DDR 컨트롤러는 보통 2가지 정보를 조합해서 트랜잭션을 판단한다.
     
     1. 주소가 memory영역인지
     2. 이 트랜잭션이 cacheable/bufferable 성격인지
-    
+    <br>
     실제 SoC 구현에서의 메모리 컨트롤러 2가지 패턴이 있음
     
     패턴 1 ) AxCACHE가 그대로 전달 되는 경우
@@ -569,6 +595,7 @@ UART register access:
     "DDR Controller가 AxCACHE를 직접 보지는 않지만 AxCACHE에 의해 결정된 정책의 결과를 받는다."
     ```
     
+<br>
 
 **Cacheable write (AxCACHE=1111)**
 
@@ -591,8 +618,12 @@ UART register access:
 
 ⇒ DDR controller의 관점에서는 “cacheable이냐 / 아니냐”가 분명히 다르게 보인다
 
-[용어 설명](%5BSIGNAL%5D%20CACHE/%EC%9A%A9%EC%96%B4%20%EC%84%A4%EB%AA%85%202e96feb16a3e80dfa3f5e5e8b4b8f887.md)
+<br>
+---
+관련 내용 정리 
+<br>
+[AXI4 – Glossary]({% post_url AXI/2026-03-04-axi4-glossary %})
 
-[AXI3 memory attribute signaling](%5BSIGNAL%5D%20CACHE/AXI3%20memory%20attribute%20signaling%202e96feb16a3e80d79752e09c7201b1f5.md)
+[AXI3 Memory Attribute Signaling]({% post_url AXI/2026-03-04-axi3-memory-attribute-signaling %})
 
-[**AXI Changes to memory attribute signaling**](%5BSIGNAL%5D%20CACHE/AXI%20Changes%20to%20memory%20attribute%20signaling%202e96feb16a3e80339d8fe88753446038.md)
+[AXI4 – Changes to Memory Attribute Signaling]({% post_url AXI/2026-03-04-axi4-axi-changes-memory-attribute-signaling %})

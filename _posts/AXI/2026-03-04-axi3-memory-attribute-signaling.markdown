@@ -20,14 +20,16 @@ AxCACHE[0] — Bufferable (B) 비트
 
 인터커넥트 또는 다른 어떤 컴포넌트라도 이 트랜잭션이 최종 목적지에 도달하는 것을 임의의 사이클 동안 지연 시킬 수 있다.
 
-<aside>
+```smalltalk
 💡
 
 참고
 
 Bufferable 속성은 보통 쓰기(write) 트랜잭션에서만 의미가 있다.
 
-</aside>
+```
+
+<br>
 
 AxCACHE[1] — Cacheable (C) 비트
 
@@ -45,17 +47,21 @@ AxCACHE[1] — Cacheable (C) 비트
 - 쓰기(write) → 여러 개의 서로 다른 write를 하나로 병합(merge) 할 수 있다
 - 읽기(read) → 해당 위치의 데이터를 미리 가져올 수(prefetch) 있고, 한 번 가져온 값을 여러 read 트랜잭션에서 재 사용할 수 있다.
 
+<br>
+
 AxCACHE[2] — Read-allocate (RA) 비트
 
 이 비트가 assert(1) 되면,
 
 읽기(read) 트랜잭션에서 캐시 할당이 권장된다 (단, 필수는 아니다).
 
-제약 조건
+- 제약 조건
 
-C 비트가 0일 때는
+    C 비트가 0일 때는
 
-RA 비트를 assert해서는 안 된다.
+    RA 비트를 assert해서는 안 된다.
+
+<br>
 
 AxCACHE[3] — Write-allocate (WA) 비트
 
@@ -63,10 +69,13 @@ AxCACHE[3] — Write-allocate (WA) 비트
 
 쓰기(write) 트랜잭션에서 캐시 할당이 권장된다 (역시 필수는 아니다).
 
-제약 조건
+- 제약 조건
 
-C 비트가 0일 때는
+    C 비트가 0일 때는
 
-WA 비트를 assert해서는 안 된다.
+    WA 비트를 assert해서는 안 된다.
 
-[Cache Attribute](AXI3%20memory%20attribute%20signaling/Cache%20Attribute%202e96feb16a3e80219ca7d318097a2895.md)
+<br>
+---
+<br>
+[AXI4 – Cache Attribute]({% post_url AXI/2026-03-04-axi4-cache-attribute %})
