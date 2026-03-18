@@ -6,8 +6,6 @@ categories: Code Optimization
 show_on_home: false
 ---
 
-# 메모리 최적화
-
 ![image.png](/assets/posts_image/Code_Optimization/Memory%20Optimization/image.png)
 
 ## **※ ROM 최적화**
@@ -50,6 +48,8 @@ ROM 최적화는 실행 파일을 줄이는 노력을 해야 함
     
 5. 표현은 간결하하고 불필요한 중간 과정은 생략
 
+<br>
+
 ## **※ RAM 최적화**
 
 스택을 얼마나 효율적으로 사용하는 지가 RAM 최적화의 관건
@@ -60,9 +60,9 @@ ROM 최적화는 실행 파일을 줄이는 노력을 해야 함
     
     스택 프레임 참고 
     
-    https://www.tcpschool.com/c/c_memory_stackframe
+    - https://www.tcpschool.com/c/c_memory_stackframe
     
-    https://justicehui.github.io/unifox/2018/09/30/Unifox_Basic/
+    - https://justicehui.github.io/unifox/2018/09/30/Unifox_Basic/
     
     스택프레임 구조에 따라 함수에서 다른 함수를 호출하면 새로운 함수가 사용할 메모리를 스택에서 또 할당 받아야 되고, 복귀주소, 사용중인 레지스터의 내용들, 매개변수, 지역변수 등 많은 내용을 스택에 저장해야 하니 RAM 메모리의 사용량이 늘어난다.
     
@@ -116,7 +116,8 @@ ROM 최적화는 실행 파일을 줄이는 노력을 해야 함
     				printf("zero\n");		
     }
     ```
-    
+    <br>
+
     ```c
     | CF | PF | AF | ZF | SF | IF | MOD(4bit) | 남는 비트들 |
     
@@ -128,7 +129,8 @@ ROM 최적화는 실행 파일을 줄이는 노력을 해야 함
     	[CF][PF][AF][ZF][SF][IF][MOD(4bit)][unused 22bit]
     
     ```
-    
+    <br>
+
     ```c
     unsigned int CF;
     unsigned int PF;
@@ -160,6 +162,8 @@ ROM 최적화는 실행 파일을 줄이는 노력을 해야 함
     ```
     
     이런 방식은 하드웨어 설정에서 유용하게 사용될 수 있으며, 특히 메모리를 절약 하는데 효과적이다.  
+    
+    <br>
     
     하지만 개별 비트를 처리해야 하기 때문에 내부적으로 shift나 masking연산에 의한 오버헤드가 발생하여 속도가 조금 떨어질 수도 있다.  
     

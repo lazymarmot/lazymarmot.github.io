@@ -6,9 +6,9 @@ categories: Code Optimization
 show_on_home: false
 ---
 
-# C의 메모리 사용
+먼저 확인할 내용
 
-[ELF 세그먼트 구조](https://www.notion.so/ELF-2fb6feb16a3e8079b7d6e690c90a31ac?pvs=21) 
+[ELF 세그먼트 구조]({% post_url Build_Upload/2026-03-10-elf-segment-structure %})
 
 위 페이지 내용을 참고하게 되면 C 프로그램이 메모리 레이아웃을 어떻게 사용하는지 알 수 있다. 
 
@@ -21,11 +21,12 @@ show_on_home: false
 
 C에서 메모리를 지정하는 지정자들은 아래와 같이 나뉜다
 
-| 기억 부류 지정자 | extern, static, auto, register | 데이터가 저장될 메모리 영역 결정
-결정된 메모리의 영역에 따라 데이터 초기화, 유효범위, 유효 시간등 달라짐 |
+| 기억 부류 지정자 | extern, static, auto, register | 데이터가 저장될 메모리 영역 결정 결정된 메모리의 영역에 따라 데이터 초기화, 유효범위, 유효 시간등 달라짐 |
 | --- | --- | --- |
 | 타입 지정자 | void, char, short, int, long, float, double, signed, unsigned | 데이터 크기 결정지음 |
 | 타입 한정자 | const, volatile | 메모리의 성질 변화를 일으킴 |
+
+<br>
 
 ### **※ static**
 
@@ -46,6 +47,8 @@ void t(int a)
     static int d = 10;
     char e = 0x1;
 }
+
+<br>
 
 ```c
 int a;          // 전역, 초기화 X
@@ -83,7 +86,9 @@ char e = 0x1;
 
 함수 들어올 때 생성, 함수 나가면 사라짐
 
-<c, d 공통 / 차이점>
+<br>
+
+***c, d 공통 / 차이점***
 
 | 구분 | `static int c = 30;` | `static int d = 10;` |
 | --- | --- | --- |
@@ -95,7 +100,9 @@ char e = 0x1;
 | 외부 파일 접근(extern 접근) | 불가 | 불가 |
 | 용도 | 파일 전용 전역 상태 | 함수 전용 내부 상태 |
 
-< 함수 내부 static 변수 특징>
+<br>
+
+***함수 내부 static 변수 특징***
 
 | 구분 | 전역 변수 | 함수 내부 static  |
 | --- | --- | --- |
@@ -105,7 +112,7 @@ char e = 0x1;
 | 접근 범위 | 전체 파일 / 외부 | **함수 내부만** |
 | 이름 충돌 | 가능 | **불가능** |
 
-<aside>
+```smalltalk
 💡
 
 함수 내부 static 변수
@@ -118,7 +125,9 @@ char e = 0x1;
 
 주로 상태 제어나 count 설정, device driver에서는 initialized 체크를 위해서 사용
 
-</aside>
+```
+
+<br>
 
 ```c
 <초기화 한 번만 해야 할 때>
@@ -133,6 +142,7 @@ void driver_init(void)
     initialized = 1;
 }
 ```
+<br>
 
 ```c
 <카운터/누적값>
@@ -147,6 +157,7 @@ int read_error(void)
 }
 
 ```
+<br>
 
 ### ※ extern
 
@@ -176,6 +187,7 @@ int read_error(void)
     int k;
     ```
     
+<br>
 
 ### ※ auto
 
@@ -208,7 +220,7 @@ void func4(void)
 		printf("func4에서 출력 : a(%d) c(%d)\n", a,c);
 }
 ```
-
+<br>
 ```c
 출력 결과
 main의 블록 내에서 출력 : a(500), b(5)
